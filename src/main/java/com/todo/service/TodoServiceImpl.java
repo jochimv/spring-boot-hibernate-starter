@@ -1,5 +1,6 @@
 package com.todo.service;
 
+import com.todo.exception.TodoNotFoundException;
 import com.todo.model.Todo;
 import com.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -20,8 +20,8 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public Optional<Todo> getTodoById(Long id) {
-        return todoRepository.findById(id);
+    public Todo getTodoById(Long id) {
+        return todoRepository.findById(id).orElseThrow(() -> new TodoNotFoundException("Todo not found for ID: " + id));
     }
 
     @Override
